@@ -14,6 +14,20 @@ namespace MutualFundNAVTrigger.NETWebAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Allow cors for react app
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp",
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:5173")
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
+                    });
+            });
+
+
             // ====== Add Configuration for EF Core + Identity ======
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -60,10 +74,14 @@ namespace MutualFundNAVTrigger.NETWebAPI
             }
 
             app.UseHttpsRedirection();
+            // ====== Use CORS ======
+            app.UseCors("AllowReactApp");
 
             // ====== Add Auth Middleware ======
             app.UseAuthentication(); // IMPORTANT: Use before Authorization
+
             app.UseAuthorization();
+
 
             app.MapControllers();
             app.Run();
