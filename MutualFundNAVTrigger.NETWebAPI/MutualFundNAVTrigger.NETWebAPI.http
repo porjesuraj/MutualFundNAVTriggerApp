@@ -1,0 +1,6 @@
+@MutualFundNAVTrigger.NETWebAPI_HostAddress = http://localhost:5251
+
+GET {{MutualFundNAVTrigger.NETWebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
